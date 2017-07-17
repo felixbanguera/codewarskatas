@@ -16,24 +16,28 @@ def productFib(prod)
   fib__lmt = get_limited_fib(prod/2.0)
   fib_divisors = get_fib_divisors(fib__lmt,get_all_divisors(prod))
   puts fib__lmt.to_s
-  resp = [nil, nil, false]
-  fib_divisors.each do |e|
-    puts e
-    nxt = fib__lmt[fib__lmt.index(e)+1]
-    if e*nxt <= prod
-      if e*nxt == prod
-        resp[2] = true
-        resp[0] = e
-        resp[1] = nxt
+  resp = [0, 0, false]
+  puts "fib_divisors: #{fib_divisors.to_s}"
+  unless fib_divisors.count < 2
+    fib_divisors.each do |e|
+      puts e
+      nxt = fib__lmt[fib__lmt.index(e)+1]
+      if nxt && e*nxt <= prod
+        if e*nxt == prod
+          resp[2] = true
+          resp[0] = e
+          resp[1] = nxt
+          break
+        end
+      else
         break
       end
-    else
-      break
     end
   end
   unless resp[2]
     idx = find_least_multipliers(fib__lmt, prod)
-    resp = [fib__lmt[idx],fib__lmt[idx+1],false]
+    resp[0] =  fib__lmt[idx+1] ? fib__lmt[idx] : fib__lmt[idx-1]
+    resp[1] = fib__lmt[idx+1] ? fib__lmt[idx+1] : fib__lmt[idx]
   end
   resp
 end
